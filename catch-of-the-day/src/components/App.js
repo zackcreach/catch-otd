@@ -7,19 +7,33 @@ import sampleFishes from '../sample-fishes';
 import base from '../base';
 
 export default class App extends Component {
-  constructor() {
-    super();
+  // No longer need constructor, see notes below
+  // constructor() {
+    // super();
 
-    this.addFish = this.addFish.bind(this);
-    this.updateFish = this.updateFish.bind(this);
-    this.removeFish = this.removeFish.bind(this);
-    this.loadSamples = this.loadSamples.bind(this);
-    this.addToOrder = this.addToOrder.bind(this);
-    this.removeFromOrder = this.removeFromOrder.bind(this);
-    this.state = {
-      fishes: {},
-      order: {}
-    }
+    // No longer need to bind in the constructor! Refactored all custom methods to arrow functions
+    // Thanks ES6!
+
+    // this.addFish = this.addFish.bind(this);
+    // this.updateFish = this.updateFish.bind(this);
+    // this.removeFish = this.removeFish.bind(this);
+    // this.loadSamples = this.loadSamples.bind(this);
+    // this.addToOrder = this.addToOrder.bind(this);
+    // this.removeFromOrder = this.removeFromOrder.bind(this);
+
+    // You can also define state in the constructor, or just declare state below
+    // this.state = {
+    //   fishes: {},
+    //   order: {}
+    // }
+  // }
+  // just like adding properties to an object
+  // if we don't add static up front, it creates a new copy
+  // of state each time the App class is initialized, see proptypes in Inventory
+  // for when to use static
+  state = {
+    fishes: {},
+    order: {}
   }
   componentWillMount() {
     // WillMount will run right before our component renders
@@ -52,22 +66,22 @@ export default class App extends Component {
     localStorage.setItem(`order-${this.props.params.storeId}`,
       JSON.stringify(nextState.order));
   }
-  addFish(fish) {
+  addFish = (fish) => {
     const fishes = {...this.state.fishes}
     const timestamp = Date.now();
     fishes[`fish-${timestamp}`] = fish;
     this.setState({
       fishes
     })
-  }
-  updateFish(key, updatedFish) {
+  };
+  updateFish = (key, updatedFish) => {
     const fishes = {...this.state.fishes}
     fishes[key] = updatedFish;
     this.setState({
       fishes
     })
-  }
-  removeFish(key) {
+  };
+  removeFish = (key) => {
     const fishes = {...this.state.fishes}
     // Could simply use the delete keyword, but firebase doesn't like that
     // delete fishes[key]
@@ -75,13 +89,13 @@ export default class App extends Component {
     this.setState({
       fishes
     });
-  }
-  loadSamples() {
+  };
+  loadSamples = () => {
     this.setState({
       fishes: sampleFishes 
     })
-  }
-  addToOrder(key) {
+  };
+  addToOrder = (key) => {
     // Make a copy of our state
     const order = {...this.state.order};
     // Update OR add a new number of fish
@@ -90,14 +104,14 @@ export default class App extends Component {
     this.setState({
       order
     })
-  }
-  removeFromOrder(key) {
+  };
+  removeFromOrder = (key) => {
     const order = {...this.state.order}
     delete order[key];
     this.setState({
       order
     })
-  }
+  };
   render() {
     return (
       <div className='catch-of-the-day'>
@@ -137,8 +151,7 @@ export default class App extends Component {
       </div>
     )
   }
-}
-
-App.propTypes = {
-  params: React.PropTypes.object.isRequired
+  static propTypes = {
+    params: React.PropTypes.object.isRequired
+  };
 }

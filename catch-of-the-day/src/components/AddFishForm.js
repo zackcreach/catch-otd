@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 export default class AddFishForm extends Component {
-  createFish(event) {
+  createFish = (event) => {
     event.preventDefault();
     const fish = {
       name: this.name.value,
@@ -28,8 +28,7 @@ export default class AddFishForm extends Component {
       </form>
     )
   }
-}
-
-AddFishForm.propTypes = {
-  addFish: React.PropTypes.func.isRequired
+  static propTypes = {
+    addFish: React.PropTypes.func.isRequired
+  };
 }

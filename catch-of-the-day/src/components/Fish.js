@@ -22,10 +22,9 @@ export default class Fish extends Component {
       </li>
     )
   }
-}
-
-Fish.propTypes = {
-  details: React.PropTypes.object.isRequired,
-  index: React.PropTypes.string.isRequired,
-  addToOrder: React.PropTypes.func.isRequired,
+  static propTypes = {
+    details: React.PropTypes.object.isRequired,
+    index: React.PropTypes.string.isRequired,
+    addToOrder: React.PropTypes.func.isRequired,
+  }
 }

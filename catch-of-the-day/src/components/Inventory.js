@@ -3,19 +3,23 @@ import AddFishForm from './AddFishForm';
 import base from '../base';
 
 export default class Inventory extends Component {
-  constructor() {
-    super();
-    this.renderLogin = this.renderLogin.bind(this);
-    this.renderInventory = this.renderInventory.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.logout = this.logout.bind(this);
-    this.authenticate = this.authenticate.bind(this);
-    this.authHandler = this.authHandler.bind(this);
-    this.state = {
-      uid: null,
-      owner: null
-    }
-  }
+  // constructor() {
+  //   super();
+    // this.renderLogin = this.renderLogin.bind(this);
+    // this.renderInventory = this.renderInventory.bind(this);
+    // this.handleChange = this.handleChange.bind(this);
+    // this.logout = this.logout.bind(this);
+    // this.authenticate = this.authenticate.bind(this);
+    // this.authHandler = this.authHandler.bind(this);
+    // this.state = {
+    //   uid: null,
+    //   owner: null
+    // }
+  // }
+  state = {
+    uid: null,
+    owner: null,
+  };
   componentDidMount() {
     base.onAuth((user) => {
       if (user) {
@@ -23,7 +27,7 @@ export default class Inventory extends Component {
       }
     })
   }
-  handleChange(e, key) {
+  handleChange = (e, key) => {
     // Make a copy of one single fish that changed (with [key])
     const fish = this.props.fishes[key];
 
@@ -33,8 +37,8 @@ export default class Inventory extends Component {
       [e.target.name]: e.target.value
     }
     this.props.updateFish(key, updatedFish);
-  }
-  renderLogin() {
+  };
+  renderLogin = () => {
     const logout = <button>Log Out!</button>
     return (
       <nav className="login">
@@ -45,18 +49,18 @@ export default class Inventory extends Component {
         <button className="twitter" onClick={() => this.authenticate('twitter')}>Log In With Twitter</button>
       </nav>
     )
-  }
-  authenticate(provider) {
+  };
+  authenticate = (provider) => {
     console.log(`Trying to login with ${provider}`);
     base.authWithOAuthPopup(provider, this.authHandler);
-  }
-  logout() {
+  };
+  logout = () => {
     base.unauth();
     this.setState({
       uid: null
     })
-  }
-  authHandler(err, authData) {
+  };
+  authHandler = (err, authData) => {
     console.log(authData);
     if (err) {
       console.log(err);
@@ -83,8 +87,8 @@ export default class Inventory extends Component {
         owner: data.owner || authData.user.uid
       })
     })
-  }
-  renderInventory(key) {
+  };
+  renderInventory = (key) => {
     const fish = this.props.fishes[key];
     return (
       <div className="fish-edit" key={key}>
@@ -99,7 +103,7 @@ export default class Inventory extends Component {
         <button onClick={() => this.props.removeFish(key)}>Remove Fish</button>
       </div>
     )
-  }
+  };
   render() {
     // Fun fact: you only need to do () => this.logout() if you're passing
     // arguments and you want them bound. If no arguments, no function needed!
@@ -127,13 +131,14 @@ export default class Inventory extends Component {
       </div>    
     )
   }
-}
-
-Inventory.propTypes = {
-  fishes: React.PropTypes.object.isRequired,
-  updateFish: React.PropTypes.func.isRequired,
-  removeFish: React.PropTypes.func.isRequired,
-  addFish: React.PropTypes.func.isRequired,
-  loadSamples: React.PropTypes.func.isRequired,
-  storeId: React.PropTypes.string.isRequired,
+  // Adding the static keyword means we don't need a copy
+  // every time Inventory class is initialized
+  static propTypes = {
+    fishes: React.PropTypes.object.isRequired,
+    updateFish: React.PropTypes.func.isRequired,
+    removeFish: React.PropTypes.func.isRequired,
+    addFish: React.PropTypes.func.isRequired,
+    loadSamples: React.PropTypes.func.isRequired,
+    storeId: React.PropTypes.string.isRequired,
+  };
 }
